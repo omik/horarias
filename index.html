@@ -1,24 +1,20 @@
 <!DOCTYPE html>
-<html lang="es"></html>
-<html>
+<html lang="es">
 
 <head>
-	<title>Señales Horarias</title>
+	<title>Horarias</title>
 	<script>
 		function checkTime() {
 			var now = new Date();
 			var minutes = now.getMinutes();
 			var seconds = now.getSeconds();
 			var clock = document.getElementById('clock');
-			var body = document.getElementsByTagName('body')[0];
 			if (minutes === 59 && seconds === 55) {
 				var audio = document.getElementById('audio');
 				audio.play();
-				clock.style.color = 'white';
-				clock.style.backgroundColor = 'green'; // Cambiar el color del reloj a verde
+				clock.style.color = 'green';
 			} else {
 				clock.style.color = 'black';
-				clock.style.backgroundColor = 'transparent'; // Restablecer el color original del reloj
 			}
 			clock.innerHTML = now.toLocaleTimeString();
 		}
@@ -27,11 +23,13 @@
 		window.addEventListener('load', function () {
 			var audio = document.getElementById('audio');
 			var clock = document.getElementById('clock');
-			audio.addEventListener('play', function () {
-				clock.style.backgroundColor = 'green'; // Cambiar el color del reloj a verde cuando se inicia la reproducción del audio
+			audio.addEventListener('timeupdate', function () {
+				if (!audio.paused) {
+					clock.style.color = 'green';
+				}
 			});
 			audio.addEventListener('ended', function () {
-				clock.style.backgroundColor = 'transparent'; // Restablecer el color original del reloj cuando finaliza la reproducción del audio
+				clock.style.color = 'black';
 			});
 		});
 	</script>
@@ -50,7 +48,7 @@
 
 <body>
 	<div id="clock"></div>
-	<audio id="audio" autoplay controls>
+	<audio id="audio" controls>
 		<source src="horarias.wav" type="audio/wav">
 	</audio>
 </body>
